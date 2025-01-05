@@ -7,6 +7,8 @@ function App() {
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+  const [sortField, setSortField] = useState<'none' | 'price' | 'name'>('none');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   useEffect(() => {
     fetchData();
@@ -45,9 +47,24 @@ function App() {
     }
   };
 
-  const filteredItems = selectedCategory === 'all'
+  const filteredAndSortedItems = selectedCategory === 'all'
     ? items
     : items.filter(item => item.category === selectedCategory);
+
+  const sortedItems = [...filteredAndSortedItems].sort((a, b) => {
+    if (sortField === 'none') return 0;
+    
+    if (sortField === 'name') {
+      return sortOrder === 'asc' 
+        ? a.name.localeCompare(b.name)
+        : b.name.localeCompare(a.name);
+    }
+    
+    // sort by price
+    return sortOrder === 'asc' 
+      ? a.price - b.price 
+      : b.price - a.price;
+  });
 
   const truncateText = (text: string, maxLength: number = 100) => {
     if (text.length <= maxLength) return text;
@@ -70,10 +87,29 @@ function App() {
             </option>
           ))}
         </select>
+
+        <select
+          value={sortField}
+          onChange={(e) => setSortField(e.target.value as 'none' | 'price' | 'name')}
+        >
+          <option value="none">Sort by...</option>
+          <option value="name">Name</option>
+          <option value="price">Price</option>
+        </select>
+
+        {sortField !== 'none' && (
+          <select
+            value={sortOrder}
+            onChange={(e) => setSortOrder(e.target.value as 'asc' | 'desc')}
+          >
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        )}
       </div>
 
       <div className="items-grid">
-        {filteredItems.map((item, index) => (
+        {sortedItems.map((item, index) => (
           <div 
             key={index} 
             className="item-card"
