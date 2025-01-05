@@ -13,21 +13,27 @@ function App() {
 
   const fetchData = async () => {
     try {
-      // Replace SHEET_ID with your actual Google Sheet ID
       const response = await fetch(
         'https://docs.google.com/spreadsheets/d/1mqxh4Ru5TfkSuIhyvfIivWopRpOFo4go_zwE7pE0Y_o/gviz/tq?tqx=out:json'
       );
       const text = await response.text();
+      // console.log('Raw response:', text);
+
       const jsonData: GoogleSheetResponse = JSON.parse(text.substring(47).slice(0, -2));
+      // console.log('Parsed JSON:', jsonData);
       
       const rows = jsonData.table.rows;
-      const transformedData: Item[] = rows.slice(1).map(row => ({
-        name: String(row.c[0]?.v || ''),
-        category: String(row.c[1]?.v || ''),
-        photo: String(row.c[2]?.v || ''),
-        description: String(row.c[3]?.v || ''),
-        price: Number(row.c[4]?.v || 0)
-      }));
+      const transformedData: Item[] = rows.slice(1).map(row => {
+        const item = {
+          name: String(row.c[0]?.v || ''),
+          category: String(row.c[1]?.v || ''),
+          photo: String(row.c[2]?.v || ''),
+          description: String(row.c[3]?.v || ''),
+          price: Number(row.c[4]?.v || 0)
+        };
+        // console.log('Transformed item:', item);
+        return item;
+      });
 
       setItems(transformedData);
       

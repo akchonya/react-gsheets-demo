@@ -75,6 +75,7 @@
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   transition: transform 0.2s;
   background: white;
+  cursor: pointer;
 }
 
 .item-card:hover {
@@ -99,6 +100,7 @@
 .item-content h3 {
   margin: 0 0 10px 0;
   font-size: 1.2rem;
+  color: #333;
 }
 
 .category {
@@ -108,9 +110,10 @@
 }
 
 .description {
+  color: #444;
   font-size: 0.9rem;
-  line-height: 1.4;
   margin: 10px 0;
+  line-height: 1.4;
 }
 
 .price {
@@ -118,4 +121,50 @@
   color: #2c3e50;
   font-size: 1.1rem;
   margin: 10px 0 0 0;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.modal-content img {
+  max-width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+}
+
+.close-button {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.close-button:hover {
+  background: rgba(0, 0, 0, 0.2);
 }
