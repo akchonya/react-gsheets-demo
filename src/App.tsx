@@ -6,6 +6,7 @@ function App() {
   const [items, setItems] = useState<Item[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
 
   useEffect(() => {
     fetchData();
@@ -23,7 +24,7 @@ function App() {
       // console.log('Parsed JSON:', jsonData);
       
       const rows = jsonData.table.rows;
-      const transformedData: Item[] = rows.slice(1).map(row => {
+      const transformedData: Item[] = rows.slice(0).map(row => {
         const item = {
           name: String(row.c[0]?.v || ''),
           category: String(row.c[1]?.v || ''),
@@ -48,6 +49,11 @@ function App() {
     ? items
     : items.filter(item => item.category === selectedCategory);
 
+  const truncateText = (text: string, maxLength: number = 100) => {
+    if (text.length <= maxLength) return text;
+    return text.slice(0, maxLength) + '...';
+  };
+
   return (
     <div className="container">
       <h1>Item Showcase</h1>
@@ -68,19 +74,45 @@ function App() {
 
       <div className="items-grid">
         {filteredItems.map((item, index) => (
-          <div key={index} className="item-card">
+          <div 
+            key={index} 
+            className="item-card"
+            onClick={() => setSelectedItem(item)}
+          >
             <div className="item-image">
               <img src={item.photo} alt={item.name} />
             </div>
             <div className="item-content">
               <h3>{item.name}</h3>
               <p className="category">{item.category}</p>
-              <p className="description">{item.description}</p>
+              <p className="description">{truncateText(item.description)}</p>
               <p className="price">{item.price.toFixed(2)} грн</p>
             </div>
           </div>
         ))}
       </div>
+
+      {selectedItem && (
+        <div className="modal-overlay" onClick={() => setSelectedItem(null)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <button 
+              className="close-button"
+              onClick={() => setSelectedItem(null)}
+            >
+              ×
+            </button>
+            <div className="modal-image">
+              <img src={selectedItem.photo} alt={selectedItem.name} />
+            </div>
+            <div className="modal-details">
+              <h2>{selectedItem.name}</h2>
+              <p className="category">{selectedItem.category}</p>
+              <p className="description">{selectedItem.description}</p>
+              <p className="price">{selectedItem.price.toFixed(2)} грн</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

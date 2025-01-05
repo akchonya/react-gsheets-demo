@@ -137,10 +137,11 @@
 }
 
 .modal-content {
-  background: white;
-  padding: 20px;
+  background-color: white;
+  padding: 2rem;
   border-radius: 8px;
-  max-width: 90%;
+  max-width: 800px;
+  width: 90%;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
@@ -148,23 +149,24 @@
 
 .modal-content img {
   max-width: 100%;
-  max-height: 70vh;
-  object-fit: contain;
+  height: auto;
 }
 
 .close-button {
   position: absolute;
-  right: 10px;
-  top: 10px;
+  top: 1rem;
+  right: 1rem;
   background: none;
   border: none;
-  font-size: 24px;
+  font-size: 1.5rem;
   cursor: pointer;
-  padding: 5px 10px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.1);
 }
 
-.close-button:hover {
-  background: rgba(0, 0, 0, 0.2);
+.modal-image img {
+  max-width: 100%;
+  height: auto;
+}
+
+.modal-details {
+  margin-top: 1rem;
 }
