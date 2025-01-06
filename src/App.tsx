@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { Item, GoogleSheetResponse } from './types';
+import ContactSection from './components/ContactSection';
 import './App.css';
 
 function App() {
@@ -149,6 +150,7 @@ function App() {
           </div>
         </div>
       )}
+      <ContactSection />
     </div>
   );
 }
